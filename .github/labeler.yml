@@ -1,0 +1,37 @@
+# Auto-label PRs based on file changes
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.md', 'docs/**']
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file: ['package.json', 'bun.lock']
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.test.ts', '**/*.spec.ts', 'tests/**']
+
+typescript:
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.ts', '**/*.tsx', 'tsconfig*.json']
+
+ci/cd:
+  - changed-files:
+    - any-glob-to-any-file: ['.github/workflows/**']
+
+config:
+  - changed-files:
+    - any-glob-to-any-file: ['*.json', '*.yml', '*.yaml', '.*.json']
+
+core:
+  - changed-files:
+    - any-glob-to-any-file: ['src/LinePayBaseClient.ts', 'src/LinePayUtils.ts']
+
+errors:
+  - changed-files:
+    - any-glob-to-any-file: ['src/errors/**']
+
+types:
+  - changed-files:
+    - any-glob-to-any-file: ['src/config/types.ts']
