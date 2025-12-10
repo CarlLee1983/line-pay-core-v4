@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/CarlLee1983/line-pay-core-v4/compare/line-pay-core-v4-v1.0.0...line-pay-core-v4-v1.1.0) (2025-12-10)
+
+
+### ✨ Features
+
+* initial release v1.0.0 ([07ff6e7](https://github.com/CarlLee1983/line-pay-core-v4/commit/07ff6e7c550bba419d47bb2bcce2ed3e2915f40e))
+
+
+### 👷 CI/CD
+
+* Implement automated release and npm publishing with release-please configuration and workflow. ([8722340](https://github.com/CarlLee1983/line-pay-core-v4/commit/8722340f870f1935db9607c89fd10e662969a0b7))
+
+
+### 🔧 Chores
+
+* add Biome for linting/formatting and configure Release Please for automated releases. ([9970e51](https://github.com/CarlLee1983/line-pay-core-v4/commit/9970e513c9b6abc458c031d8a8aee94f7befa6a2))
+
 ## [Unreleased]
 
 ## [1.0.0] - 2025-12-10
@@ -120,4 +137,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Test Framework:** Bun Test
 - **License:** MIT
 - **Engines:** Node.js >=18.0.0, Bun >=1.3.0
-
