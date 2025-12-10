@@ -1,0 +1,9 @@
+{
+    ".": {
+        "release-type": "node",
+        "package-name": "line-pay-core-v4",
+        "changelog-path": "CHANGELOG.md",
+        "bump-minor-pre-major": true,
+        "bump-patch-for-minor-pre-major": true
+    }
+}
