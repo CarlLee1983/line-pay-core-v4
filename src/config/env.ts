@@ -2,8 +2,8 @@
  * LINE Pay API Base URLs
  */
 export const LINE_PAY_API_BASE_URL = {
-    production: 'https://api-pay.line.me',
-    sandbox: 'https://sandbox-api-pay.line.me',
+  production: 'https://api-pay.line.me',
+  sandbox: 'https://sandbox-api-pay.line.me',
 }
 
 /**

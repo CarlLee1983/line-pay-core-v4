@@ -21,94 +21,94 @@
  * @see {@link https://pay.line.me/documents/online_v4.html} LINE Pay API Documentation
  */
 export class LinePayError extends Error {
-    /**
-     * Creates a new LinePayError instance.
-     *
-     * @param returnCode - LINE Pay API error code (e.g., '1104', '2101', '9000')
-     * @param returnMessage - LINE Pay API error message description
-     * @param httpStatus - HTTP status code from the response
-     * @param rawResponse - Optional raw response body for debugging purposes
-     */
-    constructor(
-        public readonly returnCode: string,
-        public readonly returnMessage: string,
-        public readonly httpStatus: number,
-        public readonly rawResponse?: string
-    ) {
-        super(`LINE Pay API Error [${returnCode}]: ${returnMessage}`)
-        this.name = 'LinePayError'
+  /**
+   * Creates a new LinePayError instance.
+   *
+   * @param returnCode - LINE Pay API error code (e.g., '1104', '2101', '9000')
+   * @param returnMessage - LINE Pay API error message description
+   * @param httpStatus - HTTP status code from the response
+   * @param rawResponse - Optional raw response body for debugging purposes
+   */
+  constructor(
+    public readonly returnCode: string,
+    public readonly returnMessage: string,
+    public readonly httpStatus: number,
+    public readonly rawResponse?: string
+  ) {
+    super(`LINE Pay API Error [${returnCode}]: ${returnMessage}`)
+    this.name = 'LinePayError'
 
-        // Maintain correct prototype chain for ES5 compatibility
-        Object.setPrototypeOf(this, LinePayError.prototype)
-    }
+    // Maintain correct prototype chain for ES5 compatibility
+    Object.setPrototypeOf(this, LinePayError.prototype)
+  }
 
-    /**
-     * Checks if this is an authentication/authorization related error.
-     *
-     * Authentication errors have return codes starting with '1' (1xxx series),
-     * such as:
-     * - 1101: User is not a LINE Pay user
-     * - 1104: Merchant not registered
-     * - 1150: No transaction history
-     *
-     * @returns `true` if the error code starts with '1', `false` otherwise
-     */
-    get isAuthError(): boolean {
-        return this.returnCode.startsWith('1')
-    }
+  /**
+   * Checks if this is an authentication/authorization related error.
+   *
+   * Authentication errors have return codes starting with '1' (1xxx series),
+   * such as:
+   * - 1101: User is not a LINE Pay user
+   * - 1104: Merchant not registered
+   * - 1150: No transaction history
+   *
+   * @returns `true` if the error code starts with '1', `false` otherwise
+   */
+  get isAuthError(): boolean {
+    return this.returnCode.startsWith('1')
+  }
 
-    /**
-     * Checks if this is a payment-related error.
-     *
-     * Payment errors have return codes starting with '2' (2xxx series),
-     * such as:
-     * - 2042: Refund failed due to insufficient merchant balance
-     * - 2101: Parameter error
-     * - 2102: JSON data format error
-     *
-     * @returns `true` if the error code starts with '2', `false` otherwise
-     */
-    get isPaymentError(): boolean {
-        return this.returnCode.startsWith('2')
-    }
+  /**
+   * Checks if this is a payment-related error.
+   *
+   * Payment errors have return codes starting with '2' (2xxx series),
+   * such as:
+   * - 2042: Refund failed due to insufficient merchant balance
+   * - 2101: Parameter error
+   * - 2102: JSON data format error
+   *
+   * @returns `true` if the error code starts with '2', `false` otherwise
+   */
+  get isPaymentError(): boolean {
+    return this.returnCode.startsWith('2')
+  }
 
-    /**
-     * Checks if this is an internal server error.
-     *
-     * Internal errors have return codes starting with '9' (9xxx series),
-     * such as:
-     * - 9000: Internal error occurred
-     *
-     * @returns `true` if the error code starts with '9', `false` otherwise
-     */
-    get isInternalError(): boolean {
-        return this.returnCode.startsWith('9')
-    }
+  /**
+   * Checks if this is an internal server error.
+   *
+   * Internal errors have return codes starting with '9' (9xxx series),
+   * such as:
+   * - 9000: Internal error occurred
+   *
+   * @returns `true` if the error code starts with '9', `false` otherwise
+   */
+  get isInternalError(): boolean {
+    return this.returnCode.startsWith('9')
+  }
 
-    /**
-     * Converts the error to a JSON-serializable object.
-     *
-     * Useful for logging, error reporting, or API responses.
-     *
-     * @returns A plain object containing all error properties
-     *
-     * @example
-     * ```typescript
-     * const error = new LinePayError('1104', 'Invalid Channel ID', 400);
-     * console.log(JSON.stringify(error.toJSON()));
-     * // {"name":"LinePayError","message":"LINE Pay API Error [1104]: Invalid Channel ID",...}
-     * ```
-     */
-    toJSON(): Record<string, unknown> {
-        return {
-            name: this.name,
-            message: this.message,
-            returnCode: this.returnCode,
-            returnMessage: this.returnMessage,
-            httpStatus: this.httpStatus,
-            rawResponse: this.rawResponse,
-        }
+  /**
+   * Converts the error to a JSON-serializable object.
+   *
+   * Useful for logging, error reporting, or API responses.
+   *
+   * @returns A plain object containing all error properties
+   *
+   * @example
+   * ```typescript
+   * const error = new LinePayError('1104', 'Invalid Channel ID', 400);
+   * console.log(JSON.stringify(error.toJSON()));
+   * // {"name":"LinePayError","message":"LINE Pay API Error [1104]: Invalid Channel ID",...}
+   * ```
+   */
+  toJSON(): Record<string, unknown> {
+    return {
+      name: this.name,
+      message: this.message,
+      returnCode: this.returnCode,
+      returnMessage: this.returnMessage,
+      httpStatus: this.httpStatus,
+      rawResponse: this.rawResponse,
     }
+  }
 }
 
 /**
@@ -130,20 +130,20 @@ export class LinePayError extends Error {
  * ```
  */
 export class LinePayTimeoutError extends Error {
-    /**
-     * Creates a new LinePayTimeoutError instance.
-     *
-     * @param timeout - The timeout duration in milliseconds that was exceeded
-     * @param url - Optional URL of the request that timed out
-     */
-    constructor(
-        public readonly timeout: number,
-        public readonly url?: string
-    ) {
-        super(`Request timeout after ${String(timeout)}ms`)
-        this.name = 'LinePayTimeoutError'
-        Object.setPrototypeOf(this, LinePayTimeoutError.prototype)
-    }
+  /**
+   * Creates a new LinePayTimeoutError instance.
+   *
+   * @param timeout - The timeout duration in milliseconds that was exceeded
+   * @param url - Optional URL of the request that timed out
+   */
+  constructor(
+    public readonly timeout: number,
+    public readonly url?: string
+  ) {
+    super(`Request timeout after ${String(timeout)}ms`)
+    this.name = 'LinePayTimeoutError'
+    Object.setPrototypeOf(this, LinePayTimeoutError.prototype)
+  }
 }
 
 /**
@@ -164,16 +164,16 @@ export class LinePayTimeoutError extends Error {
  * ```
  */
 export class LinePayConfigError extends Error {
-    /**
-     * Creates a new LinePayConfigError instance.
-     *
-     * @param message - Description of the configuration error
-     */
-    constructor(message: string) {
-        super(message)
-        this.name = 'LinePayConfigError'
-        Object.setPrototypeOf(this, LinePayConfigError.prototype)
-    }
+  /**
+   * Creates a new LinePayConfigError instance.
+   *
+   * @param message - Description of the configuration error
+   */
+  constructor(message: string) {
+    super(message)
+    this.name = 'LinePayConfigError'
+    Object.setPrototypeOf(this, LinePayConfigError.prototype)
+  }
 }
 
 /**
@@ -198,18 +198,18 @@ export class LinePayConfigError extends Error {
  * ```
  */
 export class LinePayValidationError extends Error {
-    /**
-     * Creates a new LinePayValidationError instance.
-     *
-     * @param message - Description of the validation error
-     * @param field - Optional name of the field that failed validation
-     */
-    constructor(
-        message: string,
-        public readonly field?: string
-    ) {
-        super(message)
-        this.name = 'LinePayValidationError'
-        Object.setPrototypeOf(this, LinePayValidationError.prototype)
-    }
+  /**
+   * Creates a new LinePayValidationError instance.
+   *
+   * @param message - Description of the validation error
+   * @param field - Optional name of the field that failed validation
+   */
+  constructor(
+    message: string,
+    public readonly field?: string
+  ) {
+    super(message)
+    this.name = 'LinePayValidationError'
+    Object.setPrototypeOf(this, LinePayValidationError.prototype)
+  }
 }

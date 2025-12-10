@@ -20,26 +20,10 @@ jobs:
       - name: Run release-please
         id: release
         uses: googleapis/release-please-action@v4
-        with:
-          release-type: node
-          package-name: line-pay-core-v4
-          changelog-types: '[
-            {"type":"feat","section":"✨ Features","hidden":false},
-            {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
-            {"type":"perf","section":"⚡ Performance Improvements","hidden":false},
-            {"type":"refactor","section":"♻️ Code Refactoring","hidden":false},
-            {"type":"docs","section":"📝 Documentation","hidden":false},
-            {"type":"test","section":"✅ Tests","hidden":false},
-            {"type":"build","section":"🏗️ Build System","hidden":false},
-            {"type":"ci","section":"👷 CI/CD","hidden":false},
-            {"type":"chore","section":"🔧 Chores","hidden":false},
-            {"type":"style","section":"💄 Styles","hidden":false},
-            {"type":"revert","section":"⏪ Reverts","hidden":false}
-          ]'
 
   publish:
-    name: Publish to npm
     runs-on: ubuntu-latest
+    name: Publish to npm
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     
