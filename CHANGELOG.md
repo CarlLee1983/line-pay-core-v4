@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/CarlLee1983/line-pay-core-v4/compare/v1.1.0...v1.2.0) (2025-12-10)
+
+
+### ✨ Features
+
+* initial release v1.0.0 ([07ff6e7](https://github.com/CarlLee1983/line-pay-core-v4/commit/07ff6e7c550bba419d47bb2bcce2ed3e2915f40e))
+
+
+### 👷 CI/CD
+
+* Implement automated release and npm publishing with release-please configuration and workflow. ([8722340](https://github.com/CarlLee1983/line-pay-core-v4/commit/8722340f870f1935db9607c89fd10e662969a0b7))
+
+
+### 🔧 Chores
+
+* add Biome for linting/formatting and configure Release Please for automated releases. ([9970e51](https://github.com/CarlLee1983/line-pay-core-v4/commit/9970e513c9b6abc458c031d8a8aee94f7befa6a2))
+* configure release-please to include 'v' in tags and exclude component name.chore: configure release-please to include 'v' in tags and exclude component name. ([8765366](https://github.com/CarlLee1983/line-pay-core-v4/commit/87653666cbdbd64fa8d1aeac8fb94547490fa0bc))
+* **master:** release line-pay-core-v4 1.1.0 ([45eed8c](https://github.com/CarlLee1983/line-pay-core-v4/commit/45eed8cc0d6fdcd6987e79a2b72984968f5d821b))
+* **master:** release line-pay-core-v4 1.1.0 ([88a0fd5](https://github.com/CarlLee1983/line-pay-core-v4/commit/88a0fd5f66219393f796240e1e1024a4caecc7ef))
+
 ## [1.1.0](https://github.com/CarlLee1983/line-pay-core-v4/compare/line-pay-core-v4-v1.0.0...line-pay-core-v4-v1.1.0) (2025-12-10)
 
 
