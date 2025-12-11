@@ -26,6 +26,7 @@ jobs:
     name: Publish to npm
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
+
     permissions:
       contents: read
       id-token: write
@@ -67,13 +68,12 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Verify published package
         run: |
-          sleep 10
+          echo "Waiting for npm propagation..."
+          sleep 15
           VERSION=$(node -p "require('./package.json').version")
-          npm view line-pay-core-v4@$VERSION
+          npm view line-pay-core-v4@$VERSION version
           echo "✅ Package published successfully!"
           echo "📦 https://www.npmjs.com/package/line-pay-core-v4/v/$VERSION"
