@@ -196,6 +196,7 @@ export abstract class LinePayBaseClient {
    * @param path - API endpoint path (e.g., '/v3/payments/request')
    * @param body - Optional request body (will be JSON stringified)
    * @param params - Optional query parameters
+   * @param additionalHeaders - Optional additional HTTP headers to include in the request
    * @returns Promise resolving to typed LINE Pay response
    * @throws {LinePayTimeoutError} If request exceeds configured timeout
    * @throws {LinePayError} If API returns an error or response is invalid
@@ -225,12 +226,30 @@ export abstract class LinePayBaseClient {
    *   )
    * }
    * ```
+   *
+   * @example
+   * ```typescript
+   * // POST request with additional headers (e.g., for Offline API)
+   * async makeOfflinePayment(body: PaymentRequest, deviceId: string) {
+   *   return this.sendRequest<PaymentResponse>(
+   *     'POST',
+   *     '/v4/payments/oneTimeKeys/pay',
+   *     body,
+   *     undefined,
+   *     {
+   *       'X-LINE-MerchantDeviceProfileId': deviceId,
+   *       'X-LINE-MerchantDeviceType': 'POS'
+   *     }
+   *   )
+   * }
+   * ```
    */
   protected async sendRequest<T extends LinePayBaseResponse>(
     method: 'GET' | 'POST',
     path: string,
     body?: unknown,
-    params?: Record<string, string>
+    params?: Record<string, string>,
+    additionalHeaders?: Record<string, string>
   ): Promise<T> {
     const nonce = randomUUID()
     const queryString = LinePayUtils.buildQueryString(params)
@@ -250,6 +269,7 @@ export abstract class LinePayBaseClient {
       'X-LINE-ChannelId': this.channelId,
       'X-LINE-Authorization-Nonce': nonce,
       'X-LINE-Authorization': signature,
+      ...additionalHeaders,
     }
 
     try {
