@@ -2,7 +2,7 @@
   "name": "line-pay-core-v4",
   "version": "1.4.1",
   "description": "Core library for LINE Pay API V4 SDK - Provides shared utilities, base client, TypeScript types, and error handling for building LINE Pay integrations",
-  "module": "src/index.ts",
+  "module": "./dist/index.js",
   "main": "./dist/index.js",
   "type": "module",
   "types": "./dist/index.d.ts",
