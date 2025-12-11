@@ -82,5 +82,9 @@
     "*.test.{ts,tsx}": [
       "bun test --bail"
     ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
