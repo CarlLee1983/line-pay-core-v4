@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2](https://github.com/CarlLee1983/line-pay-core-v4/compare/v1.4.1...v1.4.2) (2025-12-11)
+
+
+### 🐛 Bug Fixes
+
+* update `module` entry point to compiled JavaScript output ([65d9398](https://github.com/CarlLee1983/line-pay-core-v4/commit/65d9398081c51655eeebe8193421a6783ca08713))
+
+
+### 🔧 Chores
+
+* add npm publish configuration for public access and registry. ([c28bad4](https://github.com/CarlLee1983/line-pay-core-v4/commit/c28bad4622a07d80c022a40e2dc90f94fcb09b91))
+
 ## [1.4.1](https://github.com/CarlLee1983/line-pay-core-v4/compare/v1.4.0...v1.4.1) (2025-12-11)
 
 
