@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1](https://github.com/CarlLee1983/line-pay-core-v4/compare/v1.5.0...v1.5.1) (2025-12-11)
+
+
+### 🐛 Bug Fixes
+
+* Target global ~/.npmrc instead of local for _authToken removal during npm publish. ([990c6e9](https://github.com/CarlLee1983/line-pay-core-v4/commit/990c6e97c66528be4decd27dffbb925c87247559))
+
 ## [1.5.0](https://github.com/CarlLee1983/line-pay-core-v4/compare/v1.4.3...v1.5.0) (2025-12-11)
 
 
