@@ -11,8 +11,7 @@
       "**/src/**/*.ts",
       "**/tests/**/*.ts",
       "!**/dist",
-      "!**/node_modules",
-      "!**/*.test.ts"
+      "!**/node_modules"
     ]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
@@ -112,6 +111,7 @@
     "attributePosition": "auto"
   },
   "javascript": {
+    "globals": ["Bun"],
     "formatter": {
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",

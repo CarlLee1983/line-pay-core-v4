@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 import { createHmac, timingSafeEqual } from 'node:crypto'
+import { LinePayValidationError } from './errors/LinePayError'
 
 /**
  * Regular expression for validating LINE Pay transaction IDs
@@ -148,20 +149,23 @@ export class LinePayUtils {
   /**
    * Validates LINE Pay transaction ID format
    *
-   * Throws an error if the transaction ID is not exactly 19 digits.
+   * Throws a validation error if the transaction ID is not exactly 19 digits.
    * Use this method when you need to enforce valid format or fail fast.
    * For non-throwing validation, use {@link isValidTransactionId} instead.
    *
    * @param transactionId - The transaction ID to validate
-   * @throws {Error} If transactionId is not a 19-digit number
+   * @throws {LinePayValidationError} If transactionId is not a 19-digit number
    *
    * @example
    * ```typescript
    * try {
    *   LinePayUtils.validateTransactionId('12345') // ❌ Invalid (only 5 digits)
    * } catch (error) {
-   *   console.error(error.message)
-   *   // "Invalid transactionId format: expected 19-digit number, got "12345""
+   *   if (error instanceof LinePayValidationError) {
+   *     console.error(error.message)
+   *     // "Invalid transactionId format: expected 19-digit number, got "12345""
+   *     console.error(error.field)  // 'transactionId'
+   *   }
    * }
    *
    * LinePayUtils.validateTransactionId('1234567890123456789') // ✅ Valid (19 digits)
@@ -169,8 +173,9 @@ export class LinePayUtils {
    */
   static validateTransactionId(transactionId: string): void {
     if (!TRANSACTION_ID_REGEX.test(transactionId)) {
-      throw new Error(
-        `Invalid transactionId format: expected 19-digit number, got "${transactionId}"`
+      throw new LinePayValidationError(
+        `Invalid transactionId format: expected 19-digit number, got "${transactionId}"`,
+        'transactionId'
       )
     }
   }

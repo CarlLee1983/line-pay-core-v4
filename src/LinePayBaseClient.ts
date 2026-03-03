@@ -8,6 +8,7 @@ import { LinePayUtils } from './LinePayUtils'
  * Base Response Format for all LINE Pay APIs
  *
  * All LINE Pay API responses follow this structure, with generic type `T` for the info field.
+ * The response type varies based on whether the request succeeded or failed.
  *
  * @template T - Type of the info field containing API-specific response data
  *
@@ -18,13 +19,16 @@ import { LinePayUtils } from './LinePayUtils'
  *   orderId: string
  * }
  *
- * type PaymentResponse = LinePayBaseResponse<PaymentInfo>
+ * type PaymentResponse = LinePaySuccessResponse<PaymentInfo>
  * // {
  * //   returnCode: '0000',
  * //   returnMessage: 'Success',
  * //   info: { transactionId: '...', orderId: '...' }
  * // }
  * ```
+ *
+ * @see {@link LinePaySuccessResponse} for successful responses
+ * @see {@link LinePayErrorResponse} for error responses
  */
 export interface LinePayBaseResponse<T = unknown> {
   /**
@@ -51,6 +55,55 @@ export interface LinePayBaseResponse<T = unknown> {
    *
    * Contains API-specific response data. Only present when `returnCode` is `'0000'`.
    * The structure varies depending on the API endpoint called.
+   */
+  info?: T
+}
+
+/**
+ * Successful LINE Pay API Response
+ *
+ * Used when `returnCode` is `'0000'`. The `info` field is guaranteed to be present.
+ *
+ * @template T - Type of the info field containing API-specific response data
+ *
+ * @example
+ * ```typescript
+ * interface PaymentInfo {
+ *   transactionId: string
+ *   orderId: string
+ * }
+ *
+ * const response: LinePaySuccessResponse<PaymentInfo> = {
+ *   returnCode: '0000',
+ *   returnMessage: 'Success',
+ *   info: { transactionId: '123', orderId: 'order-1' }
+ * }
+ *
+ * // info is guaranteed to be present, no optional chaining needed
+ * console.log(response.info.transactionId)
+ * ```
+ */
+export interface LinePaySuccessResponse<T = unknown> {
+  returnCode: '0000'
+  returnMessage: string
+  /**
+   * Result information is guaranteed to be present for successful responses
+   */
+  info: T
+}
+
+/**
+ * Error LINE Pay API Response
+ *
+ * Used when `returnCode` is not `'0000'`. The `info` field is optional.
+ *
+ * @template T - Type of the info field containing API-specific response data
+ */
+export interface LinePayErrorResponse<T = unknown> {
+  returnCode: string
+  returnMessage: string
+  /**
+   * Additional error information (optional)
    */
   info?: T
 }
