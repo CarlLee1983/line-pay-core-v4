@@ -25,4 +25,11 @@ export interface LinePayConfig {
    * @default 20000
    */
   timeout?: number
+
+  /**
+   * Optional custom base URL for testing or custom deployments
+   * If provided, this overrides the URL determined by the `env` setting
+   * @internal
+   */
+  baseUrl?: string
 }

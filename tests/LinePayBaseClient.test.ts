@@ -256,10 +256,9 @@ describe('LinePayBaseClient', () => {
             const config: LinePayConfig = {
                 channelId: 'test-channel-id',
                 channelSecret: 'test-channel-secret',
+                baseUrl: mockBaseUrl,
             }
             client = new TestLinePayClient(config)
-                // Override baseUrl for testing
-                ; (client as any).baseUrl = mockBaseUrl
         })
 
         test('should send GET request successfully', async () => {
@@ -328,8 +327,8 @@ describe('LinePayBaseClient', () => {
                 channelId: 'test',
                 channelSecret: 'secret',
                 timeout: 100,
+                baseUrl: mockBaseUrl,
             })
-                ; (timeoutClient as any).baseUrl = mockBaseUrl
 
             try {
                 await timeoutClient.testRequest('GET', '/timeout')

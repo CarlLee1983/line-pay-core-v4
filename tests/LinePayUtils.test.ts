@@ -56,27 +56,101 @@ describe('LinePayUtils', () => {
             expect(typeof signature).toBe('string')
             expect(signature.length).toBeGreaterThan(0)
         })
+
+        test('should generate signature with query string', () => {
+            const channelSecret = 'test-secret'
+            const uri = '/v3/payments'
+            const body = ''
+            const nonce = 'test-nonce'
+            const queryString = '?transactionId=123'
+
+            const signature = LinePayUtils.generateSignature(
+                channelSecret,
+                uri,
+                body,
+                nonce,
+                queryString
+            )
+
+            expect(signature).toBeDefined()
+            expect(typeof signature).toBe('string')
+            expect(signature.length).toBeGreaterThan(0)
+        })
+
+        test('should generate consistent signature for identical inputs', () => {
+            const channelSecret = 'test-secret'
+            const uri = '/v3/payments/request'
+            const body = JSON.stringify({ amount: 100 })
+            const nonce = 'test-nonce'
+
+            const signature1 = LinePayUtils.generateSignature(
+                channelSecret,
+                uri,
+                body,
+                nonce
+            )
+            const signature2 = LinePayUtils.generateSignature(
+                channelSecret,
+                uri,
+                body,
+                nonce
+            )
+
+            expect(signature1).toBe(signature2)
+        })
     })
 
     describe('verifySignature', () => {
         test('should verify signature correctly', () => {
             const channelSecret = 'test-secret'
-            const data = 'test-data'
+            const uri = '/v3/payments/request'
+            const body = JSON.stringify({ amount: 100 })
+            const nonce = 'test-nonce-123'
 
+            // Generate a valid signature
             const signature = LinePayUtils.generateSignature(
                 channelSecret,
-                '/test',
-                '',
-                data
+                uri,
+                body,
+                nonce
             )
 
-            // Create the same data string for verification
-            const verificationData = `${channelSecret}/test${data}`
-
+            // Verify it with the same parameters
             const isValid = LinePayUtils.verifySignature(
                 channelSecret,
-                verificationData,
+                uri,
+                body,
+                nonce,
                 signature
+            )
+
+            expect(isValid).toBe(true)
+        })
+
+        test('should verify signature with query string', () => {
+            const channelSecret = 'test-secret'
+            const uri = '/v3/payments'
+            const body = ''
+            const nonce = 'test-nonce-456'
+            const queryString = '?transactionId=123'
+
+            // Generate signature with query string
+            const signature = LinePayUtils.generateSignature(
+                channelSecret,
+                uri,
+                body,
+                nonce,
+                queryString
+            )
+
+            // Verify with matching query string
+            const isValid = LinePayUtils.verifySignature(
+                channelSecret,
+                uri,
+                body,
+                nonce,
+                signature,
+                queryString
             )
 
             expect(isValid).toBe(true)
@@ -84,12 +158,66 @@ describe('LinePayUtils', () => {
 
         test('should reject invalid signature', () => {
             const channelSecret = 'test-secret'
-            const data = 'test-data'
+            const uri = '/v3/payments/request'
+            const body = JSON.stringify({ amount: 100 })
+            const nonce = 'test-nonce-789'
 
             const isValid = LinePayUtils.verifySignature(
                 channelSecret,
-                data,
-                'invalid-signature'
+                uri,
+                body,
+                nonce,
+                'invalid-signature-string'
+            )
+
+            expect(isValid).toBe(false)
+        })
+
+        test('should reject signature with mismatched URI', () => {
+            const channelSecret = 'test-secret'
+            const uri = '/v3/payments/request'
+            const body = JSON.stringify({ amount: 100 })
+            const nonce = 'test-nonce-abc'
+
+            const signature = LinePayUtils.generateSignature(
+                channelSecret,
+                uri,
+                body,
+                nonce
+            )
+
+            // Try to verify with different URI
+            const isValid = LinePayUtils.verifySignature(
+                channelSecret,
+                '/v3/payments/confirm',  // Different URI
+                body,
+                nonce,
+                signature
+            )
+
+            expect(isValid).toBe(false)
+        })
+
+        test('should reject signature with mismatched body', () => {
+            const channelSecret = 'test-secret'
+            const uri = '/v3/payments/request'
+            const body = JSON.stringify({ amount: 100 })
+            const nonce = 'test-nonce-def'
+
+            const signature = LinePayUtils.generateSignature(
+                channelSecret,
+                uri,
+                body,
+                nonce
+            )
+
+            // Try to verify with different body
+            const isValid = LinePayUtils.verifySignature(
+                channelSecret,
+                uri,
+                JSON.stringify({ amount: 200 }),  // Different body
+                nonce,
+                signature
             )
 
             expect(isValid).toBe(false)

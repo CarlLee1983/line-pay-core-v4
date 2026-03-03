@@ -86,10 +86,14 @@ export class LinePayUtils {
    *
    * **Security Note**: This method uses constant-time comparison to prevent timing attacks
    * where an attacker could deduce information about the signature by measuring verification time.
+   * The data format is automatically constructed to match {@link generateSignature}.
    *
    * @param secret - Channel Secret from LINE Pay Merchant Center
-   * @param data - The data string that was signed (format: `${secret}${uri}${queryString}${body}${nonce}`)
+   * @param uri - Request URI path (e.g., '/v3/payments/request' or '/webhooks')
+   * @param body - Request body as JSON string (empty string for GET requests)
+   * @param nonce - Unique random string for this request
    * @param signature - The signature to verify (received from LINE Pay)
+   * @param queryString - Optional query string (without leading '?')
    * @returns `true` if signature is valid, `false` otherwise
    *
    * @example
@@ -97,11 +101,13 @@ export class LinePayUtils {
    * // Verify webhook signature
    * const receivedSignature = req.headers['x-line-signature']
    * const requestBody = JSON.stringify(req.body)
-   * const data = `${channelSecret}/webhooks${requestBody}${nonce}`
+   * const nonce = req.headers['x-line-authorization-nonce']
    *
    * const isValid = LinePayUtils.verifySignature(
    *   channelSecret,
-   *   data,
+   *   '/webhooks',
+   *   requestBody,
+   *   nonce,
    *   receivedSignature
    * )
    *
@@ -112,7 +118,16 @@ export class LinePayUtils {
    *
    * @see {@link https://nodejs.org/api/crypto.html#cryptotimingsafeequala-b} crypto.timingSafeEqual
    */
-  static verifySignature(secret: string, data: string, signature: string): boolean {
+  static verifySignature(
+    secret: string,
+    uri: string,
+    body: string,
+    nonce: string,
+    signature: string,
+    queryString = ''
+  ): boolean {
+    // Reconstruct data using the exact same format as generateSignature
+    const data = `${secret}${uri}${queryString}${body}${nonce}`
     const expected = createHmac('sha256', secret).update(data).digest('base64')
 
     // Use timingSafeEqual to prevent timing attacks
@@ -205,7 +220,9 @@ export class LinePayUtils {
    * ```
    */
   static buildQueryString(params?: Record<string, string>): string {
-    if (params === undefined || Object.keys(params).length === 0) return ''
+    if (params === undefined || Object.keys(params).length === 0) {
+      return ''
+    }
     const query = new URLSearchParams(params).toString()
     return `?${query}`
   }

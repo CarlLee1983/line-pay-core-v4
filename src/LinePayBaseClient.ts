@@ -161,7 +161,10 @@ export abstract class LinePayBaseClient {
     this.channelId = channelId
     this.channelSecret = channelSecret
     this.baseUrl =
-      config.env === 'production' ? LINE_PAY_API_BASE_URL.production : LINE_PAY_API_BASE_URL.sandbox
+      config.baseUrl ??
+      (config.env === 'production'
+        ? LINE_PAY_API_BASE_URL.production
+        : LINE_PAY_API_BASE_URL.sandbox)
     this.timeout = config.timeout ?? DEFAULT_TIMEOUT
 
     if (this.timeout <= 0) {
@@ -272,20 +275,18 @@ export abstract class LinePayBaseClient {
       ...additionalHeaders,
     }
 
-    try {
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => {
-        controller.abort()
-      }, this.timeout)
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      controller.abort()
+    }, this.timeout)
 
+    try {
       const response = await fetch(url, {
         method,
         headers,
         body: method === 'POST' ? bodyString : undefined,
         signal: controller.signal,
       })
-
-      clearTimeout(timeoutId)
 
       const responseText = await response.text()
 
@@ -330,6 +331,8 @@ export abstract class LinePayBaseClient {
       }
 
       throw error
+    } finally {
+      clearTimeout(timeoutId)
     }
   }
 }
